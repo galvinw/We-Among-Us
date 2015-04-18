@@ -1,0 +1,15 @@
+      <ion-side-menu side="left">
+        <ion-header-bar class="bar-assertive">
+          <h1 class="title">Photo</h1>
+            <button ng-click="getPhoto()" class="button button-block button-primary">Take Photo</button>
+            <img ng-src="{{lastPhoto}}" style="max-width: 100%">
+        </ion-header-bar>
+
+        <ion-content scroll="false">
+          <ion-list>
+            <ion-item ng-repeat="project in projects" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
+              {{project.title}}
+            </ion-item>
+          </ion-list>
+        </ion-content>
+      </ion-side-menu>
