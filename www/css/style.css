@@ -11,3 +11,25 @@ img {
 	width: 100%;
 }
 	/* Empty. Add your own CSS if you like */
+
+.p_title {
+	padding : 2px 2px 20px 2px;
+	text-align: right;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	font: Arial;
+	font-weight: bold;
+	text-shadow: 2px 2px 1px #FFF;
+}
+
+.p_subtitle {
+	padding : 2px 2px 2px 2px;
+	text-align: right;
+	position: absolute;
+	right: 0px;
+	bottom: 0px;
+	font: Arial;
+	font-weight: bold;
+	text-shadow: 2px 2px 1px #FFF;
+}

@@ -17,7 +17,8 @@
   "cordovaPlugins": [
     "org.apache.cordova.camera",
     "org.apache.cordova.inappbrowser",
-    "org.apache.cordova.media"
+    "org.apache.cordova.media",
+    "org.apache.cordova.media-capture"
   ],
   "cordovaPlatforms": []
 }

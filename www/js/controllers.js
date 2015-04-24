@@ -22,27 +22,20 @@ angular.module('poorau.controllers', [])
   };
 
   $scope.fbLogin = function() {
-    openFB.login(
-        function(response) {
-            if (response.status === 'connected') {
-                console.log('Facebook login succeeded');
-                $scope.closeLogin();
-            } else {
-                alert('Facebook login failed');
-            }
-        },
-        {scope: 'email,publish_actions'});
-  }
 
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
+    fb.authWithOAuthPopup("facebook", function(error, authData) {
+      if (error) {
+        console.log("Login Failed!", error);
+      } else {
+        console.log("Authenticated successfully with payload:", authData);
+      }
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
-    $timeout(function() {
-      $scope.closeLogin();
-    }, 1000);
+
+    }, {
+      remember: "default",
+      scope: 'public_profile,email,publish_actions,user_likes'
+    }
+    );
   };
 
 })
@@ -50,19 +43,19 @@ angular.module('poorau.controllers', [])
 
 .controller('ProfileCtrl', function($scope) {
 
-    openFB.api({
-        path: '/me',
-        params: {fields: 'id,name,city'},
-        success: function(user) {
-            $scope.$apply(function() {
-                $scope.user = user;
+    // openFB.api({
+    //     path: '/me',
+    //     params: {fields: 'id,name,city'},
+    //     success: function(user) {
+    //         $scope.$apply(function() {
+    //             $scope.user = user;
 
-            });
-        },
-        error: function(error) {
-            alert('Facebook error: ' + error.error_description);
-        }
-    })
+    //         });
+    //     },
+    //     error: function(error) {
+    //         alert('Facebook error: ' + error.error_description);
+    //     }
+    // })
   })
 
 .controller('CamCtrl', function($scope, $cordovaCamera) {
@@ -71,27 +64,50 @@ angular.module('poorau.controllers', [])
 
      $scope.takePicture = function(){
 
-      // var options = {
-      //     quality : 75,
-      //     destinationType : Camera.DestinationType.DATA_URL,
-      //     sourceType : Camera.PictureSourceType.CAMERA,
-      //     allowEdit : true,
-      //     encodingType: Camera.EncodingType.JPEG,
-      //     popoverOptions: CameraPopoverOptions,
-      //     targetWidth: 500,
-      //     targetHeight: 500,
-      //     saveToPhotoAlbum: false
-      //     };
+        var options = {
+            quality : 75,
+            destinationType : Camera.DestinationType.DATA_URL,
+            sourceType : Camera.PictureSourceType.CAMERA,
+            allowEdit : true,
+            encodingType: Camera.EncodingType.JPEG,
+            popoverOptions: CameraPopoverOptions,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: false
+            };
 
 
 
-      $cordovaCamera.getPicture().then(function(imageData) {
-       // syncArray.$add({image: imageData}).then(function() {
-            alert("Image has been uploaded");
-       // });
-    }, function(error) {
-        console.error(error);
-    });
+        $cordovaCamera.getPicture().then(function(imageData) {
+         // syncArray.$add({image: imageData}).then(function() {
+              alert("Image has been uploaded");
+         // });
+      }, function(error) {
+          console.error(error);
+      });
+    };
 
-    }
+      $scope.takeAudio = function() {
+          // capture callback
+      var captureSuccess = function(mediaFiles) {
+          var i, path, len;
+          for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+              path = mediaFiles[i].fullPath;
+              console.log(path);
+              // do something interesting with the file
+          }
+      };
+
+      // capture error callback
+      var captureError = function(error) {
+          navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+      };
+
+      // start audio capture
+      navigator.device.capture.captureAudio(
+        captureSuccess, captureError, {limit:2}
+
+        );
+  };
+
 });
